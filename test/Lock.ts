@@ -15,7 +15,20 @@ describe("SavingsContract Contract", function () {
     it("should allow depositing tokens", async () => {
       const {savingsContract, owner} = await loadFixture(deploySavingsContract);
       const userAddress = owner; 
-      const depositAmount = ethers.parseEther("10");
+      const depositAmount = 10;
+
+      // Deposit tokens
+      await savingsContract.connect(owner).deposit(depositAmount);
+
+      // Check user balance
+      const userBalance = await savingsContract.checkUserBalance(userAddress);
+      expect(userBalance).to.equal(depositAmount);
+    });
+
+    it("should allow depositing of ether", async () => {
+      const {savingsContract, owner} = await loadFixture(deploySavingsContract);
+      const userAddress = owner; 
+      const depositAmount = ethers.parseEther("100");
 
       // Deposit tokens
       await savingsContract.connect(owner).deposit(depositAmount);
